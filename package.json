@@ -1,0 +1,48 @@
+{
+  "name": "nexora-convert",
+  "version": "0.1.0",
+  "private": true,
+  "description": "NEXORA Convert — premium dark all-in-one file conversion platform",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/turndown": "^5.0.6",
+    "adm-zip": "^0.6.1",
+    "canvas": "^3.2.3",
+    "client-zip": "^2.5.1",
+    "docx": "^9.9.0",
+    "ffmpeg-static": "^5.3.0",
+    "file-type": "^22.1.1",
+    "geist": "^1.7.2",
+    "lucide-react": "^1.54.0",
+    "mammoth": "^1.13.0",
+    "next": "^16.4.0",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.4.299",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^4.3.3",
+    "tar": "^7.5.22",
+    "turndown": "^7.2.4",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitest/coverage-v8": "^5.0.3",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.4.0",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.3"
+  }
+}

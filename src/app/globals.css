@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   NEXORA Convert — design tokens (premium restrained dark)
+   8px spacing system · radii 12–18px · short transitions · violet primary
+--------------------------------------------------------------------------- */
+@theme {
+  --color-background: #09090b;
+  --color-surface: #111116;
+  --color-card: #17171f;
+  --color-elevated: #20202a;
+
+  --color-accent: #8b5cf6;
+  --color-accent-hover: #9d75f7;
+  --color-accent-soft: #a78bfa;
+  --color-accent-dim: #6d48c9;
+  --color-cyan: #22d3ee;
+
+  --color-foreground: #fafafa;
+  --color-muted: #a1a1aa;
+  --color-faint: #8f8f99;
+  --color-border: #2b2b36;
+  --color-border-strong: #3d3d4a;
+
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
+  --color-error: #fb7185;
+
+  --font-sans:
+    var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-card: 16px;
+  --radius-panel: 14px;
+  --radius-control: 12px;
+
+  --shadow-card: 0 1px 2px 0 rgb(0 0 0 / 0.25);
+  --shadow-pop: 0 12px 32px -12px rgb(0 0 0 / 0.55);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 120ms;
+  --duration-base: 160ms;
+}
+
+/* ---------------------------------- base --------------------------------- */
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100dvh;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-accent) 40%, transparent);
+  color: var(--color-foreground);
+}
+
+/* Visible, consistent focus indicator (WCAG 2.4.7 / 2.4.11) */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Respect reduced motion (WCAG 2.3.3) */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Restrained dark scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 999px;
+  border: 2px solid var(--color-background);
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@utility focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Hide horizontal scrollbar on category rails while keeping them scrollable */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Subtle hero accent field (no neon, no glassmorphism) */
+.hero-field {
+  background:
+    radial-gradient(
+      60% 55% at 50% -10%,
+      color-mix(in srgb, var(--color-accent) 14%, transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      45% 40% at 85% 20%,
+      color-mix(in srgb, var(--color-cyan) 7%, transparent) 0%,
+      transparent 75%
+    );
+}

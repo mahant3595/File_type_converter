@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEXORA Convert — Every File. Any Format. One Simple Tool.</title>
+  <meta name="description" content="NEXORA Convert is a production-ready file conversion platform: 54 real conversion tools for images, PDFs, documents, spreadsheets, audio, video and archives with a premium dark UI." />
+  <meta property="og:title" content="NEXORA Convert — Every File. Any Format." />
+  <meta property="og:description" content="54 real conversion tools. Premium dark interface. Open-source Next.js + TypeScript." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%238b5cf6'/%3E%3Cpath d='M9 16h14M17 10l6 6-6 6' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #09090b; --bg2: #111116; --card: #17171f; --elev: #20202a;
+      --accent: #8b5cf6; --accent2: #22d3ee; --text: #fafafa; --text2: #a1a1aa;
+      --border: #2b2b36; --success: #34d399; --error: #fb7185;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent2); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+    header {
+      position: sticky; top: 0; z-index: 10; background: rgba(9,9,11,.85);
+      backdrop-filter: blur(8px); border-bottom: 1px solid var(--border);
+    }
+    .bar { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; color: var(--text); }
+    .brand .mark { width: 30px; height: 30px; border-radius: 8px; background: var(--accent); display: grid; place-items: center; }
+    .nav { display: flex; gap: 20px; font-size: 14px; }
+    .nav a { color: var(--text2); font-weight: 500; }
+    .nav a:hover { color: var(--text); text-decoration: none; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; border-radius: 12px;
+      padding: 11px 20px; font-size: 14px; font-weight: 600; cursor: pointer;
+      border: 1px solid transparent; transition: all .15s ease;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #7c4ef0; text-decoration: none; transform: translateY(-1px); }
+    .btn-ghost { background: transparent; color: var(--text); border-color: var(--border); }
+    .btn-ghost:hover { background: var(--elev); text-decoration: none; }
+    .hero { position: relative; padding: 88px 0 64px; overflow: hidden; }
+    .hero::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(600px 300px at 18% 0%, rgba(139,92,246,.16), transparent 65%),
+        radial-gradient(500px 260px at 85% 15%, rgba(34,211,238,.08), transparent 60%);
+    }
+    .hero .wrap { position: relative; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600;
+      color: var(--accent2); background: rgba(34,211,238,.08); border: 1px solid rgba(34,211,238,.25);
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 22px;
+    }
+    h1 { font-size: clamp(34px, 6vw, 56px); line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; max-width: 800px; }
+    h1 .grad { color: var(--accent); }
+    .sub { margin-top: 20px; font-size: clamp(16px, 2vw, 19px); color: var(--text2); max-width: 660px; }
+    .cta { margin-top: 32px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .note { margin-top: 26px; font-size: 13.5px; color: var(--text2); display: flex; gap: 8px; align-items: flex-start; max-width: 640px; }
+    .note svg { flex: none; margin-top: 3px; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-top: 56px; }
+    .stat { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; }
+    .stat b { display: block; font-size: 26px; font-weight: 800; color: var(--text); }
+    .stat span { font-size: 13px; color: var(--text2); }
+    section { padding: 56px 0; border-top: 1px solid var(--border); }
+    h2 { font-size: clamp(24px, 3vw, 30px); font-weight: 700; letter-spacing: -0.01em; margin-bottom: 8px; }
+    .lead { color: var(--text2); font-size: 15.5px; margin-bottom: 30px; max-width: 640px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+    .tool {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 18px 20px; transition: border-color .15s, transform .15s;
+    }
+    .tool:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .tool b { display: block; font-size: 15px; font-weight: 650; margin-bottom: 4px; }
+    .tool p { font-size: 13px; color: var(--text2); }
+    .fmt { display: inline-block; font-size: 11.5px; font-weight: 700; letter-spacing: .04em; color: var(--accent); background: rgba(139,92,246,.12); border-radius: 6px; padding: 3px 8px; margin-top: 10px; }
+    pre {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 14px;
+      padding: 20px 22px; overflow-x: auto; font-size: 14px; line-height: 1.7;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: #d4d4d8;
+    }
+    pre .c { color: #6b7280; } pre .g { color: var(--success); }
+    .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: start; }
+    @media (max-width: 760px) { .cols { grid-template-columns: 1fr; } .nav { display: none; } }
+    ul.checks { list-style: none; display: grid; gap: 12px; }
+    ul.checks li { display: flex; gap: 10px; font-size: 14.5px; color: var(--text2); }
+    ul.checks li b { color: var(--text); font-weight: 600; }
+    footer { border-top: 1px solid var(--border); padding: 30px 0; font-size: 13.5px; color: var(--text2); }
+    .foot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap bar">
+      <div class="brand">
+        <span class="mark" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 32 32" fill="none"><path d="M9 16h14M17 10l6 6-6 6" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        NEXORA Convert
+      </div>
+      <nav class="nav" aria-label="Page">
+        <a href="#tools">Tools</a>
+        <a href="#run">Run locally</a>
+        <a href="#about">About</a>
+        <a href="https://github.com/mahant3595/File_type_converter#readme">README</a>
+      </nav>
+      <a class="btn btn-ghost" href="https://github.com/mahant3595/File_type_converter">GitHub</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div class="wrap">
+        <span class="pill">● Open source · 54 real conversion tools · no fake results</span>
+        <h1>Every File. Any Format. <span class="grad">One Simple Tool.</span></h1>
+        <p class="sub">Discover powerful file conversion tools for images, documents, PDFs, audio, and video. Get the format you need with a simple, secure, and intuitive workflow.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="https://github.com/mahant3595/File_type_converter">View source code</a>
+          <a class="btn btn-ghost" href="https://github.com/mahant3595/File_type_converter/blob/main/README.md">Read the README</a>
+        </div>
+        <p class="note">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          This is the static GitHub Pages landing page. The full converter runs server-side on Node.js — files are processed in memory on the server, never stored. See “Run locally” below.
+        </p>
+        <div class="stats" role="list">
+          <div class="stat" role="listitem"><b>54</b><span>conversion tools, every one tested</span></div>
+          <div class="stat" role="listitem"><b>8</b><span>format categories</span></div>
+          <div class="stat" role="listitem"><b>139</b><span>automated tests passing</span></div>
+          <div class="stat" role="listitem"><b>AA</b><span>WCAG 2.2 contrast verified</span></div>
+        </div>
+      </div>
+    </div>
+
+    <section id="tools">
+      <div class="wrap">
+        <h2>Real conversions, not placeholders</h2>
+        <p class="lead">Every tool is backed by a real engine — sharp, pdf-lib, pdfjs, mammoth, SheetJS and ffmpeg — and verified end-to-end by an exhaustive test suite. Unsupported formats are hidden instead of faked.</p>
+        <div class="grid">
+          <div class="tool"><b>Images</b><p>JPG, PNG, WEBP, GIF, TIFF, AVIF, SVG — convert, resize, rotate, set quality.</p><span class="fmt">JPG → PNG · WEBP → JPG</span></div>
+          <div class="tool"><b>PDF tools</b><p>Create from images, render pages, extract text, merge and split.</p><span class="fmt">JPG → PDF · PDF → JPG · Merge</span></div>
+          <div class="tool"><b>Documents</b><p>Word documents to and from Markdown, HTML and plain text.</p><span class="fmt">DOCX → MD · TXT → DOCX</span></div>
+          <div class="tool"><b>Spreadsheets</b><p>CSV, XLSX, XLS and ODS workbooks — plus JSON export.</p><span class="fmt">CSV → XLSX · XLS → CSV</span></div>
+          <div class="tool"><b>Audio</b><p>MP3, WAV, FLAC, OGG and M4A with bitrate control.</p><span class="fmt">WAV → MP3 · FLAC → MP3</span></div>
+          <div class="tool"><b>Video</b><p>MP4, WEBM, MOV, MKV and AVI — including video to audio.</p><span class="fmt">MP4 → MP3 · MP4 → WEBM</span></div>
+          <div class="tool"><b>Archives</b><p>Create, convert and safely extract ZIP and TAR (path-traversal safe).</p><span class="fmt">ZIP → TAR · Extract ZIP</span></div>
+          <div class="tool"><b>Presentations</b><p>Pull text content out of PowerPoint decks.</p><span class="fmt">PPTX → TXT</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="run">
+      <div class="wrap cols">
+        <div>
+          <h2>Run it locally</h2>
+          <p class="lead">Node.js 20+. The conversion engines are server-side, so a static host alone won’t run them — deploy to any Node host.</p>
+          <pre><span class="c"># clone and install</span>
+git clone https://github.com/mahant3595/File_type_converter.git
+cd File_type_converter
+npm ci
+
+<span class="c"># development (http://localhost:3000)</span>
+npm run dev
+
+<span class="c"># tests, lint, production</span>
+npm test
+npm run lint
+npm run build &amp;&amp; npm start
+
+<span class="g">✓ 139 tests · 54 tools verified end-to-end</span></pre>
+        </div>
+        <div id="about">
+          <h2>What’s inside</h2>
+          <ul class="checks">
+            <li>✓ <b>Next.js 16 + React 19 + TypeScript strict</b> — App Router with per-tool SEO landing pages.</li>
+            <li>✓ <b>Tailwind CSS v4 design system</b> — mandated charcoal palette, violet accents, AA contrast.</li>
+            <li>✓ <b>Central conversion registry</b> — UI can only show tools that have tested handlers.</li>
+            <li>✓ <b>Security</b> — double validation, magic-byte inspection, size limits, filename sanitization, leak-free errors.</li>
+            <li>✓ <b>Privacy</b> — uploads processed in memory, immediately discarded; nothing persisted.</li>
+            <li>✓ <b>Verification</b> — 139 unit/handler tests, 18 HTTP E2E checks, 109-check full-tool sweep.</li>
+            <li>✓ <b>Plan-driven</b> — <a href="https://github.com/mahant3595/File_type_converter/blob/main/plan.md">plan.md</a> is a living checklist of all 46 tasks.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <span>© 2026 NEXORA Convert — MIT-licensed project by <a href="https://github.com/mahant3595">mahant3595</a>.</span>
+      <span>Built with Next.js, Tailwind &amp; TypeScript · <a href="https://github.com/mahant3595/File_type_converter">Source</a></span>
+    </div>
+  </footer>
+</body>
+</html>

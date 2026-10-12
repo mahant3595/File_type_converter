@@ -160,12 +160,15 @@ NEXT_OUTPUT=export NEXT_BASE_PATH=/File_type_converter npx next build   # → ou
 ```
 
 The live site is published from the **`gh-pages` branch** (the contents of `out/` at its root,
-with a `.nojekyll` file so `_next/` is served). To republish after changes:
+plus a `.nojekyll` file so GitHub Pages serves `_next/`). To republish after changes:
 
 ```bash
-# after building out/:
-git push -f origin $(git commit-tree $(git write-tree ...) ...):refs/heads/gh-pages   # or
-# simply copy out/ onto the gh-pages branch and push — GitHub Pages auto-builds it
+NEXT_OUTPUT=export NEXT_BASE_PATH=/File_type_converter npx next build   # → out/
+git worktree add /tmp/pages gh-pages
+rm -rf /tmp/pages/* /tmp/pages/.[!.]* 2>/dev/null
+cp -r out/* /tmp/pages/ && touch /tmp/pages/.nojekyll
+cd /tmp/pages && git add -A && git commit -m "Update site" && git push origin HEAD:gh-pages
+cd - && git worktree remove /tmp/pages
 ```
 
 - `NEXT_OUTPUT=export` switches `next.config.ts` to `output: "export"` with `trailingSlash`

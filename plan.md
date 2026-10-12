@@ -246,7 +246,8 @@ gated by capability detection).
       architecture, privacy model.
 - [x] Task 45: Final review: walk every workflow, update all checkboxes honestly, document
       limitations and blocked tasks.
-- [x] Task 47: Deploy the actual website to GitHub Pages (`docs/` folder, live at
+- [x] Task 47: Deploy the actual website to GitHub Pages (published from the `gh-pages` branch,
+      live at
       https://mahant3595.github.io/File_type_converter/). Env-gated static export
       (`NEXT_OUTPUT=export` + `NEXT_PUBLIC_BASE_PATH`) with `trailingSlash` for static-host
       URL resolution; `tools/?q=` deep links converted to client-side URL sync so the `/tools`

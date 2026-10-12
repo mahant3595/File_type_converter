@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import type { ToolDef } from "@/lib/catalog";
-import { CATEGORIES } from "@/lib/catalog";
+import { CATEGORIES, type CategoryId } from "@/lib/catalog";
 import { categoryCounts, filterTools, popularTools } from "@/lib/search";
 import { CategoryTabs, type CategoryFilter } from "./CategoryTabs";
 import { ToolCard } from "./ToolCard";
@@ -12,9 +12,33 @@ import { Button } from "./ui/Button";
 import { FormatBadge } from "./ui/Badge";
 import Link from "next/link";
 
+/**
+ * Current `location.search` as an external store. Server snapshot is a stable
+ * empty string, so static export/prerender never reads `window`, and the value
+ * updates on back/forward navigation without setState-in-effect.
+ */
+function subscribeLocationSearch(notify: () => void): () => void {
+  window.addEventListener("popstate", notify);
+  return () => window.removeEventListener("popstate", notify);
+}
+function getLocationSearch(): string {
+  return window.location.search;
+}
+function useLocationSearch(): string {
+  return React.useSyncExternalStore(subscribeLocationSearch, getLocationSearch, () => "");
+}
+
+function paramFrom(search: string, key: string): string {
+  return new URLSearchParams(search).get(key) ?? "";
+}
+
+function parseUrlCategory(raw: string): CategoryFilter {
+  if (!raw || raw === "audio-video") return "all";
+  return CATEGORIES.some((c) => c.id === raw) ? (raw as CategoryId) : "all";
+}
+
 interface ToolExplorerProps {
   tools: ToolDef[];
-  initialQuery?: string;
   initialCategory?: CategoryFilter;
   /** Render the in-explorer search field (used on /tools and category pages). */
   showSearch?: boolean;
@@ -24,13 +48,21 @@ interface ToolExplorerProps {
 
 export function ToolExplorer({
   tools,
-  initialQuery = "",
   initialCategory = "all",
   showSearch = false,
   showTabs = true,
 }: ToolExplorerProps) {
-  const [query, setQuery] = React.useState(initialQuery);
-  const [category, setCategory] = React.useState<CategoryFilter>(initialCategory);
+  // Deep-links like /tools?q=jpg%20to%20png are applied client-side so the page
+  // can be fully static. Once the user interacts, their state wins.
+  const search = useLocationSearch();
+  const [typedQuery, setTypedQuery] = React.useState<string | null>(null);
+  const [typedCategory, setTypedCategory] = React.useState<CategoryFilter | null>(null);
+  const query = typedQuery ?? paramFrom(search, "q");
+  const category =
+    typedCategory ??
+    (initialCategory !== "all" ? initialCategory : parseUrlCategory(paramFrom(search, "cat")));
+  const setQuery = React.useCallback((q: string) => setTypedQuery(q), []);
+  const setCategory = React.useCallback((c: CategoryFilter) => setTypedCategory(c), []);
 
   const counts = React.useMemo(() => {
     const base = categoryCounts(tools);
@@ -53,7 +85,8 @@ export function ToolExplorer({
               tools={tools}
               size="compact"
               id="explorer-search"
-              initialQuery={initialQuery}
+              key={query}
+              initialQuery={query}
               onSubmitQuery={(q) => setQuery(q)}
               onQueryChange={(q) => setQuery(q)}
               placeholder="Search by name, format or phrase…"

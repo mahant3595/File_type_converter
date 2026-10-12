@@ -5,6 +5,17 @@ conversion engines — not a mockup. Every tool listed in the interface is imple
 verified end-to-end.
 
 > **Every File. Any Format. One Simple Tool.**
+>
+> Discover powerful file conversion tools for images, documents, PDFs, audio and video. Get the
+> format you need with a simple, secure and intuitive workflow — 54 tools across 8 categories,
+> every one backed by a real engine and verified end-to-end.
+
+**Stats:** 54 conversion tools · 8 format categories · 139 automated tests · WCAG 2.2 AA contrast verified
+
+| | | | |
+|---|---|---|---|
+| **Images** — JPG, PNG, WEBP, GIF, TIFF, AVIF, SVG: convert, resize, rotate, quality | **PDF** — create from images, render pages, extract text, merge & split | **Documents** — Word ↔ Markdown, HTML, plain text | **Spreadsheets** — CSV, XLSX, XLS, ODS + JSON export |
+| **Audio** — MP3, WAV, FLAC, OGG, M4A with bitrate control | **Video** — MP4, WEBM, MOV, MKV, AVI, incl. video → audio | **Archives** — create/convert/extract ZIP & TAR (traversal-safe) | **Presentations** — extract text from PPTX |
 
 - 🔍 **Tool discovery first** — searchable, filterable dashboard of 54 working conversion tools
 - 🎨 **Premium restrained dark design** — charcoal surfaces, violet accents, Geist type, 8px system
@@ -12,7 +23,7 @@ verified end-to-end.
   (spreadsheets), ffmpeg (audio/video), in-memory ZIP/TAR (archives)
 - 🔒 **Honest privacy** — files are processed on the server and deleted immediately; nothing is stored
 - ♿ **WCAG 2.2 AA** — audited contrast, keyboard navigation, ARIA combobox search, reduced motion
-- 🧪 **138 automated tests** + a 18-step HTTP end-to-end verification script
+- 🧪 **139 automated tests** + a 18-step HTTP end-to-end verification script
 
 ---
 
@@ -132,7 +143,30 @@ npm test
   malformed options, leak-free errors
 - `design-tokens.test.ts` — 39 WCAG contrast pairs parsed from `globals.css`
 
+## Live site
+
+**https://mahant3595.github.io/File_type_converter/** — the full app exported statically to
+GitHub Pages (`docs/` folder). Browsing, search, favorites and every tool page work; the
+conversion *engines* are server-side, so the deployed static site shows an honest
+"hosted without the conversion server" message when you start a conversion. Run it locally
+(commands above) or deploy to a Node host for real conversions.
+
 ## Deployment
+
+### Static export (GitHub Pages / any static host)
+
+```bash
+NEXT_OUTPUT=export NEXT_BASE_PATH=/File_type_converter npx next build   # → out/
+cp -r out/* docs/                                                       # what Pages serves
+```
+
+- `NEXT_OUTPUT=export` switches `next.config.ts` to `output: "export"` with `trailingSlash`
+  and the base path baked into every link/asset.
+- `NEXT_PUBLIC_BASE_PATH` (inlined at build) points the upload transport at
+  `<base>/api/convert`; without a server it fails **honestly** with an explanatory message.
+- The API route exports as a static 405 stub — POSTs never reach it on a static host.
+
+### Node host (full functionality)
 
 Requires a **Node.js host** (the conversion engines run server-side):
 

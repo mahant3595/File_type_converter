@@ -28,6 +28,9 @@ export class AbortedError extends Error {
   }
 }
 
+/** Sub-path aware endpoint (GitHub Pages serves under e.g. /File_type_converter). */
+const API_URL = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/api/convert`;
+
 export interface UploadOptions {
   toolId: string;
   files: File[];
@@ -51,7 +54,7 @@ export function uploadConversion({
     for (const file of files) form.append("files", file);
 
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "/api/convert");
+    xhr.open("POST", API_URL);
     xhr.responseType = "text";
 
     let settled = false;
@@ -88,13 +91,19 @@ export function uploadConversion({
       const parsed = body as { outputs?: ApiOutput[]; error?: { code?: string; message?: string } } | null;
       if (xhr.status >= 200 && xhr.status < 300 && parsed?.outputs) {
         settleResolve(parsed.outputs);
-      } else {
+      } else if (parsed?.error?.message) {
+        settleReject(new ConvertClientError(parsed.error.code ?? "unknown", parsed.error.message));
+      } else if (!parsed) {
+        // Non-JSON reply (a static host's 404 page): the conversion server isn't part
+        // of this deployment. Say so honestly instead of showing a raw status code.
         settleReject(
           new ConvertClientError(
-            parsed?.error?.code ?? "unknown",
-            parsed?.error?.message ?? `The server responded ${xhr.status}. Please try again.`,
+            "unavailable",
+            "This deployment is hosted without the conversion server, so files cannot be converted here. Run the app locally (npm ci && npm run dev) or deploy it to a Node host — see the README.",
           ),
         );
+      } else {
+        settleReject(new ConvertClientError("unknown", `The server responded ${xhr.status}. Please try again.`));
       }
     };
     xhr.onerror = () => {

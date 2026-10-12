@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
-import { CATEGORIES, type CategoryId } from "@/lib/catalog";
 import { getAvailableTools } from "@/server/convert/registry";
 import { ToolExplorer } from "@/components/ToolExplorer";
-import type { CategoryFilter } from "@/components/CategoryTabs";
 
 export const metadata: Metadata = {
   title: "All Tools — every file conversion available",
@@ -13,21 +11,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/tools" },
 };
 
-function parseCategory(raw: string | undefined): CategoryFilter {
-  if (!raw) return "all";
-  if (raw === "audio-video") return "all";
-  if (CATEGORIES.some((c) => c.id === raw)) return raw as CategoryId;
-  return "all";
-}
-
-export default async function ToolsPage({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
-  const params = await searchParams;
-  const q = typeof params.q === "string" ? params.q : "";
-  const category = parseCategory(typeof params.cat === "string" ? params.cat : undefined);
+export default async function ToolsPage() {
+  // No searchParams access: ?q=/cat= deep-links are applied client-side so the
+  // page prerenders for static hosting (GitHub Pages) as well as the server build.
   const tools = await getAvailableTools();
 
   return (
@@ -52,7 +38,7 @@ export default async function ToolsPage({
       </div>
 
       <div className="mt-8">
-        <ToolExplorer tools={tools} initialQuery={q} initialCategory={category} showSearch />
+        <ToolExplorer tools={tools} showSearch />
       </div>
     </div>
   );

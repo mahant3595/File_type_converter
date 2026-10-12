@@ -8,7 +8,10 @@ import { ConvertError, isConvertError, toConvertError } from "@/server/convert/e
 import type { InputFile, OutputFile } from "@/server/convert/types";
 
 export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
+// `force-static` is required by `output: export` (GitHub Pages): only the GET
+// handler's 405 response is statically exported there. On a Node host, POST
+// still executes per request because it reads the request body.
+export const dynamic = "force-static";
 
 /** Absolute request ceiling (base64 inflates payloads ~33%). */
 const MAX_REQUEST_BYTES = 700 * 1024 * 1024;

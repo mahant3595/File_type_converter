@@ -246,6 +246,16 @@ gated by capability detection).
       architecture, privacy model.
 - [x] Task 45: Final review: walk every workflow, update all checkboxes honestly, document
       limitations and blocked tasks.
+- [x] Task 47: Deploy the actual website to GitHub Pages (`docs/` folder, live at
+      https://mahant3595.github.io/File_type_converter/). Env-gated static export
+      (`NEXT_OUTPUT=export` + `NEXT_PUBLIC_BASE_PATH`) with `trailingSlash` for static-host
+      URL resolution; `tools/?q=` deep links converted to client-side URL sync so the `/tools`
+      page stays static; `/api/convert` exports as a static 405 stub and the upload transport
+      fails **honestly** ("hosted without the conversion server — run locally or deploy to a
+      Node host") instead of showing a raw status. Root `index.html` landing page folded into
+      README and removed. `.nojekyll` ensures `_next/` is served. Verified: local Pages-sim
+      smoke test (all routes + assets 200 under the sub-path), Node build keeps `/api/convert`
+      dynamic, tsc/lint/139 tests green.
 
 ## 15. Acceptance criteria (summary)
 
